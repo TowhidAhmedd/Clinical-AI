@@ -28,6 +28,9 @@
 > **Medical Safety Disclaimer:** This system is strictly for **medical education and research purposes only**. It **cannot** be used for clinical diagnosis, treatment decisions, prescriptions, dosage guidance, or emergency medical advice. Always consult a qualified healthcare professional for any medical concerns.
 
 ---
+# Watch Demo Video
+[![Watch Video](https://img.youtube.com/vi/JQbHalHyE8Q/maxresdefault.jpg)](https://youtu.be/JQbHalHyE8Q)
+---
 
 ## 📋 Table of Contents
 
