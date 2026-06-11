@@ -10,6 +10,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.x-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![LangGraph](https://img.shields.io/badge/LangGraph-0.1-7C3AED?style=flat-square&logo=langchain&logoColor=white)](https://github.com/langchain-ai/langgraph)
+[![LangSmith](https://img.shields.io/badge/LangSmith-0.8.11-7C3AED?style=flat-square&logo=langchain&logoColor=white)](https://smith.langchain.com/)
 [![Groq](https://img.shields.io/badge/Groq-Llama%203-F97316?style=flat-square&logo=groq&logoColor=white)](https://console.groq.com/)
 [![Pinecone](https://img.shields.io/badge/Pinecone-Vector%20DB-00B388?style=flat-square&logo=pinecone&logoColor=white)](https://www.pinecone.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
