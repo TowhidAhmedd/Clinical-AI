@@ -1,0 +1,68 @@
+# =============================================
+# Render.com Deployment Configuration
+# =============================================
+# Deploy both backend and frontend to Render.
+#
+# Usage:
+#   render blueprint apply render.yaml
+# =============================================
+
+services:
+
+  # ─────────────────────────────────────────
+  # Backend: FastAPI (Web Service)
+  # ─────────────────────────────────────────
+  - type: web
+    name: clinical-rag-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: PORT
+        value: 8000
+      - key: GROQ_API_KEY
+        sync: false
+      - key: PINECONE_API_KEY
+        sync: false
+      - key: PINECONE_ENVIRONMENT
+        value: us-east-1
+      - key: PINECONE_INDEX_NAME
+        value: clinical-rag
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: API_KEY
+        generateValue: true
+      - key: LANGCHAIN_TRACING_V2
+        value: "false"
+      - key: LANGCHAIN_API_KEY
+        sync: false
+      - key: EMBEDDING_MODEL
+        value: BAAI/bge-small-en-v1.5
+      - key: GROQ_MODEL
+        value: llama3-70b-8192
+      - key: LOG_LEVEL
+        value: INFO
+    disk:
+      name: clinical-rag-data
+      mountPath: /app/data
+      sizeGB: 1
+
+  # ─────────────────────────────────────────
+  # Frontend: Streamlit (Web Service)
+  # ─────────────────────────────────────────
+  - type: web
+    name: clinical-rag-frontend
+    runtime: docker
+    dockerfilePath: ./Dockerfile.frontend
+    plan: starter
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: clinical-rag-backend
+          type: web
+          property: host
+      - key: PORT
+        value: 8501

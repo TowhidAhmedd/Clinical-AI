@@ -1,0 +1,21 @@
+# =============================================
+# Clinical RAG Assistant - Frontend Dockerfile
+# =============================================
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=8501
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir streamlit==1.36.0 requests==2.32.3
+
+COPY frontend/ ./frontend/
+
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+USER appuser
+
+EXPOSE ${PORT}
+
+CMD ["sh", "-c", "streamlit run frontend/app.py --server.port=${PORT} --server.address=0.0.0.0 --server.headless=true"]

@@ -1,0 +1,8 @@
+{
+  "include": ["backend", "frontend"],
+  "extraPaths": ["frontend"],
+  "venvPath": ".",
+  "venv": "venv",
+  "pythonVersion": "3.11",
+  "typeCheckingMode": "basic"
+}

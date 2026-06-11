@@ -1,0 +1,26 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]
+
+[tool.coverage.run]
+source = ["backend"]
+omit = ["tests/*", "**/__init__.py"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+
+[tool.pyright]
+# frontend/ is added to sys.path at runtime by app.py; tell Pylance the same.
+extraPaths = ["frontend"]
+venvPath = "."
+venv = "venv"
+pythonVersion = "3.11"
+typeCheckingMode = "basic"

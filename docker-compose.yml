@@ -1,0 +1,71 @@
+version: "3.9"
+
+# =============================================
+# Clinical RAG Assistant - Docker Compose
+# =============================================
+# Usage:
+#   cp .env.example .env       # Fill in your API keys
+#   docker compose up --build
+#
+# Services:
+#   backend   → http://localhost:8000  (FastAPI)
+#   frontend  → http://localhost:8501  (Streamlit)
+
+services:
+
+  # ─────────────────────────────────────────
+  # FastAPI Backend
+  # ─────────────────────────────────────────
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clinical-rag-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - PORT=8000
+      - APP_ENV=production
+      - ALLOWED_ORIGINS=http://localhost:8501,http://frontend:8501
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - clinical-rag-net
+
+  # ─────────────────────────────────────────
+  # Streamlit Frontend
+  # ─────────────────────────────────────────
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: clinical-rag-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - PORT=8501
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - clinical-rag-net
+
+networks:
+  clinical-rag-net:
+    driver: bridge
+
+volumes:
+  app-data:
+  app-logs:
