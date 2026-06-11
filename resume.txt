@@ -3,7 +3,7 @@ Clinical RAG Assistant
 
 Full-Stack AI / GenAI Engineer  ·  Personal Project                                                         2024 – 2025
 
-Python FastAPI LangGraph LangSmith RAG Groq / Llama 3 Pinecone Streamlit Docker
+Python FastAPI LangGraph LangSmith RAG Groq / Llama 3 Pinecone Streamlit Docker JWT
 
 Architected a production-grade medical education AI using a 4-agent LangGraph workflow (Router → Safety → Retrieval → Answer) with automatic fallback between WEB_ONLY, DOC_ONLY, and HYBRID search modes.
 
@@ -21,4 +21,21 @@ Configured LangSmith observability, structured Loguru logging, Docker + docker-c
 
 Achieved 98/98 tests passing across guardrails, RAG pipeline, agent workflow, API endpoints, and RAG evaluation metrics (precision, recall, faithfulness, relevancy).
 
+======================================================================================
 
+Clinical RAG Assistant  ·  Full-Stack GenAI Project
+
+ GitHub
+Python
+FastAPI
+LangGraph
+RAG
+Groq · Llama 3
+Pinecone
+Tavily
+Streamlit
+Docker
+JWT
+Built a production-ready medical education AI using a 4-agent LangGraph pipeline (Router → Safety → Retrieval → Answer) with auto-switching between web search (Tavily + BeautifulSoup) and document RAG (Pinecone + FlashRank) modes — no document upload required.
+Engineered a 4-layer safety guardrail system (regex input filter, LLM safety agent, retrieval threshold check, output filter) with domain-whitelisted web search, content sanitisation, and JWT-secured FastAPI backend with rate limiting and Pydantic v2 validation.
+Delivered 98/98 passing tests across guardrails, RAG evaluation (precision, recall, faithfulness), agent workflow, and REST API — containerised with Docker, traced with LangSmith, and deployed on Render.
