@@ -37,6 +37,7 @@
 - [Overview](#-overview)
 - [Key Features](#-key-features)
 - [System Architecture](#-system-architecture)
+- [Project Architecture](#-project-architecture)
 - [Multi-Agent Workflow](#-multi-agent-workflow)
 - [Safety Guardrails](#-safety-guardrails)
 - [Quick Start](#-quick-start)
@@ -123,7 +124,73 @@ The system is built around a **4-agent LangGraph pipeline** with **4-layer safet
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
+
+```mermaid
+flowchart TD
+
+    UI[Streamlit Frontend - Chat UI / Upload UI / Auth UI]
+
+    UI --> API[FastAPI Gateway - Auth Middleware + Rate Limiter]
+
+    API --> AUTH[JWT Auth Service]
+    AUTH --> ORCH[RAG Orchestrator - LangGraph Controller]
+
+    ORCH --> ROUTER[Query Router Agent - WEB / DOC / HYBRID]
+    ROUTER --> SAFETY[Safety Guardrail Agent - Medical Safety Filter]
+
+    SAFETY --> RET[Retrieval Agent]
+    SAFETY --> WEB[Web Search Agent]
+    SAFETY --> ANSWER[Answer Generation Agent]
+
+    subgraph INGESTION[Ingestion Pipeline]
+        PDF[PDF Parser - pdfplumber]
+        DOCX[DOCX Parser - python-docx]
+        TXT[TXT Loader]
+        AUDIO[Audio - Whisper]
+        VIDEO[Video - ffmpeg + Whisper]
+        CHUNK[Chunking Engine]
+        EMB[Embedding Model - BGE-small]
+    end
+
+    PDF --> CHUNK
+    DOCX --> CHUNK
+    TXT --> CHUNK
+    AUDIO --> CHUNK
+    VIDEO --> CHUNK
+
+    CHUNK --> EMB
+    EMB --> DB[(Pinecone - Embeddings + Chunks)]
+
+    RET --> QEMB[Query Embedding]
+    QEMB --> SEARCH[Vector Search - Cosine Similarity]
+    SEARCH --> DB
+    SEARCH --> RERANK[Cross-Encoder Re-ranker - MiniLM]
+
+    RERANK --> PROMPT[Prompt Builder - Context + Citations]
+
+    WEB --> TAVILY[Tavily API]
+    WEB --> WIKI[Wikipedia Fallback]
+
+    TAVILY --> PROMPT
+    WIKI --> PROMPT
+
+    PROMPT --> LLM[Groq LLM API - Llama 3.1 / 3.3]
+
+    LLM --> GUARDOUT[Output Safety Filter]
+
+    GUARDOUT --> RESPONSE[Structured Response Builder - Answer + Sources + Confidence]
+
+    RESPONSE --> OBS[Observability Layer]
+
+    OBS --> LANGSMITH[LangSmith Tracing]
+    OBS --> LOGS[Structured Logs - Loguru]
+    OBS --> METRICS[Evaluation Engine - Accuracy / Relevance / Latency]
+
+    RESPONSE --> UI
+```
+
+## 🏗️ Project Architecture
 
 ```
 clinical-rag-assistant/
